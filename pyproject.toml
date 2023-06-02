@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel", "python>=3.10,<3.11"]
+requires = ["setuptools", "wheel"]
 
 [project]
 name = "mres-project"
@@ -9,7 +9,8 @@ readme = "README.md"
 authors = [
     {name = "Carrow Morris-Wiltshire", email = "carrow.m.w@gmail.com"},
 ]
-license = "MIT"
+license = { file = "LICENSE" }
+requires-python = ">=3.10,<3.11"
 dependencies = [
     "asttokens==2.2.1",
     "backcall==0.2.0",
@@ -19,7 +20,7 @@ dependencies = [
     "cycler==0.11.0",
     "debugpy==1.6.7",
     "decorator==5.1.1",
-    "executing==0.2.0",
+    "executing==1.2.0",
     "fonttools==4.39.4",
     "ipykernel==6.23.1",
     "ipython==8.13.2",
@@ -54,3 +55,6 @@ dependencies = [
     "tzdata==2023.3",
     "wcwidth==0.2.6"
 ]
+
+[tool.setuptools]
+packages = ["analysis_files"] # this line specifies the package location
