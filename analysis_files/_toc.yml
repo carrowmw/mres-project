@@ -1,0 +1,9 @@
+format: jb-book
+root: 1_Understanding_Context.ipynb
+chapters:
+- file: 2.1_Initial_Data_Collection_Report.ipynb
+- file: 2.2_Data_Description_Report.ipynb
+- file: 2.3_Data_Exploration_Report.ipynb
+- file: 2.4_Data_Quality_Report.ipynb
+- file: 3_Data_Preparation.ipynb
+- file: 4_Modelling.ipynb
