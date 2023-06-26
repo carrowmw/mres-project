@@ -343,7 +343,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -359,6 +361,19 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#csv-pedestrian-count-data">2.2.1 CSV Pedestrian Count Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-raw-data">2.2.1.1 Overview of the raw data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attribute-creation-and-filtering-for-eda">2.2.1.2 Attribute creation and filtering for EDA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instances-and-target-features">2.2.1.3 Instances and target features</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -382,6 +397,8 @@ document.write(`
 <li><p>Addition of various time fields to aid data exploration.</p></li>
 <li><p>Isolate a single point location for data exploration (the intersection of Northumberland Street and Saville Row with cameras looking both east and west).</p></li>
 </ul>
+<section id="csv-pedestrian-count-data">
+<h2>2.2.1 CSV Pedestrian Count Data<a class="headerlink" href="#csv-pedestrian-count-data" title="Permalink to this heading">#</a></h2>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -422,7 +439,9 @@ document.write(`
 </div>
 </details>
 </div>
-<p>The raw csv contains extra locations that are not of interest so these will need to be filtered out. The raw data tells us we are dealing with pedestrian flow in the form <span class="math notranslate nohighlight">\(n/15m\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of pedestrians and <span class="math notranslate nohighlight">\(m\)</span> is minutes. We can also see that each row specifies a directional vector.</p>
+<section id="overview-of-the-raw-data">
+<h3>2.2.1.1 Overview of the raw data<a class="headerlink" href="#overview-of-the-raw-data" title="Permalink to this heading">#</a></h3>
+<p>The raw csv contains extra locations that are not of interest so these will need to be filtered out. The raw data tells us we are dealing with pedestrian flow in the form <span class="math notranslate nohighlight">\(n/15m\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of pedestrians and <span class="math notranslate nohighlight">\(m\)</span> is minutes. We can also see that each row specifies a directional vector. We can also see that the value for <code class="docutils literal notranslate"><span class="pre">dir</span></code> is not consistent between sensors - <code class="docutils literal notranslate"><span class="pre">NclQueenVictoriaRdPercyBuilding</span></code> for example, prefixes <code class="docutils literal notranslate"><span class="pre">from_</span></code> to each instance.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -431,7 +450,7 @@ document.write(`
 </summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># display raw data and data types</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw data:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw data (random sample):&quot;</span><span class="p">)</span>
 <span class="n">display</span><span class="p">(</span><span class="n">concat_df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw column data types:&quot;</span><span class="p">)</span>
@@ -443,7 +462,7 @@ document.write(`
 </div>
 </details>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Raw data:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Raw data (random sample):
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -609,6 +628,9 @@ document.write(`
 </div>
 </details>
 </div>
+</section>
+<section id="attribute-creation-and-filtering-for-eda">
+<h3>2.2.1.2 Attribute creation and filtering for EDA<a class="headerlink" href="#attribute-creation-and-filtering-for-eda" title="Permalink to this heading">#</a></h3>
 <p>We will create a few new columns that are string formatted derivatives of the datetime column that will help with visualising the data. We will also create some integer columns for day in week, month, quarter, and hours and minutes since midnight. This is to assist in any later analysis.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -640,7 +662,7 @@ document.write(`
 </div>
 </details>
 </div>
-<p>The next step is to filter the data on the location field as we are only interested in the NclNorthumberlandStSavilleRowEast and NclNorthumberlandStSavilleRowWest sensors initially. We will save these as seperate dataframes <code class="docutils literal notranslate"><span class="pre">east_df</span></code> and <code class="docutils literal notranslate"><span class="pre">west_df</span></code> and pickle them to preserve column data types when we need to read them in other notebooks.</p>
+<p>The next step is to filter the data on the location field as we are only interested in the NclNorthumberlandStSavilleRowEast and NclNorthumberlandStSavilleRowWest sensors initially. We will save these as seperate dataframes <code class="docutils literal notranslate"><span class="pre">east_df</span></code> and <code class="docutils literal notranslate"><span class="pre">west_df</span></code> and pickle them to preserve column data types when we load them in other notebooks.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -797,6 +819,9 @@ document.write(`
 </table>
 </div></div></div>
 </div>
+</section>
+<section id="instances-and-target-features">
+<h3>2.2.1.3 Instances and target features<a class="headerlink" href="#instances-and-target-features" title="Permalink to this heading">#</a></h3>
 <p>Now lets have a look at some of the attributes and features that are of interest. We can see that the data has significant gaps - around 15% of the data over this period is missing if we calculate the number of 15 minute periods that exist between the start and end dates. We can also see that each sensor direction contains two directional vectors. These describe whether a persons direction of travel is left or right across the CCTV footage.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -822,10 +847,10 @@ document.write(`
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;West | Completeness: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">west_df</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">intervals</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;East | Null count for flow: </span><span class="si">{</span><span class="n">east_df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> | Null count for datetime: </span><span class="si">{</span><span class="n">east_df</span><span class="p">[</span><span class="s1">&#39;dt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;East | Null count for value (pedestrian flow): </span><span class="si">{</span><span class="n">east_df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> | Null count for dt (datetime): </span><span class="si">{</span><span class="n">east_df</span><span class="p">[</span><span class="s1">&#39;dt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
-    <span class="sa">f</span><span class="s2">&quot;West | Null count for flow: </span><span class="si">{</span><span class="n">west_df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> | Null count for datetime: </span><span class="si">{</span><span class="n">west_df</span><span class="p">[</span><span class="s1">&#39;dt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="sa">f</span><span class="s2">&quot;West | Null count for value (pedestrian flow): </span><span class="si">{</span><span class="n">west_df</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> | Null count for dt (datetime): </span><span class="si">{</span><span class="n">west_df</span><span class="p">[</span><span class="s1">&#39;dt&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -846,9 +871,6 @@ West | Completeness: 85.8%
 
 East | Null count for flow: 0 | Null count for datetime: 0
 West | Null count for flow: 0 | Null count for datetime: 0
-
-East | Directional vectors: [&#39;northeast_to_southeast&#39; &#39;southeast_to_northeast&#39;]
-West | Directional vectors: [&#39;northwest_to_southwest&#39; &#39;southwest_to_northwest&#39;]
 </pre></div>
 </div>
 </div>
@@ -867,7 +889,15 @@ West | Directional vectors: [&#39;northwest_to_southwest&#39; &#39;southwest_to_
 </div>
 </div>
 </details>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>East | Directional vectors: [&#39;northeast_to_southeast&#39; &#39;southeast_to_northeast&#39;]
+West | Directional vectors: [&#39;northwest_to_southwest&#39; &#39;southwest_to_northwest&#39;]
+</pre></div>
 </div>
+</div>
+</div>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -928,6 +958,25 @@ West | Directional vectors: [&#39;northwest_to_southwest&#39; &#39;southwest_to_
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#csv-pedestrian-count-data">2.2.1 CSV Pedestrian Count Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-the-raw-data">2.2.1.1 Overview of the raw data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attribute-creation-and-filtering-for-eda">2.2.1.2 Attribute creation and filtering for EDA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instances-and-target-features">2.2.1.3 Instances and target features</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
