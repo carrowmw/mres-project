@@ -54,7 +54,7 @@ html:
   analytics:
 
   comments:
-    hypothesis              : false
+    hypothesis              : true
     utterances              : false
   announcement              : "MRes Project Exploratory Data Analysis" # A banner announcement at the top of the site.
 

@@ -53,6 +53,7 @@
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="_static/design-tabs.js"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
@@ -363,14 +364,14 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-modelling-technique">4.1 Select Modelling Technique</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-initial-test-design">4.2 Generate Initial Test Design</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-initial-test-design-hourly-time-period">4.2 Generate Initial Test Design (Hourly Time Period)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-an-limited-test-dataset">4.2.1 Creating an limited test dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-the-data">4.2.2 Clustering the data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-results">4.2.3 Visualising the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-the-hourly-clustered-data">4.2.4 Evaluating the hourly clustered data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-design-iteration-2">4.3 Test Design: Iteration 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-design-iteration-2-24-hour-time-period">4.3 Test Design: Iteration 2 (24-Hour Time Period)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-complete-days-dataset">4.3.1 Read in the complete days dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-the-data-at-daily-aggregations">4.3.2 Clustering the data at daily aggregations</a></li>
 </ul>
@@ -394,8 +395,8 @@ document.write(`
 <h2>4.1 Select Modelling Technique<a class="headerlink" href="#select-modelling-technique" title="Permalink to this heading">#</a></h2>
 <p>In this section we will select the data mining techniques that will be applied to this problem. As we want to investigate the structure of this data we will use unsupervised learning techniques. Specifically clustering techniques like k-means, x-means and DBScan. These methods will hopefully reveal some underlying patterns in the data to help us achieve the objectives we set out in section 1.</p>
 </section>
-<section id="generate-initial-test-design">
-<h2>4.2 Generate Initial Test Design<a class="headerlink" href="#generate-initial-test-design" title="Permalink to this heading">#</a></h2>
+<section id="generate-initial-test-design-hourly-time-period">
+<h2>4.2 Generate Initial Test Design (Hourly Time Period)<a class="headerlink" href="#generate-initial-test-design-hourly-time-period" title="Permalink to this heading">#</a></h2>
 <section id="creating-an-limited-test-dataset">
 <h3>4.2.1 Creating an limited test dataset<a class="headerlink" href="#creating-an-limited-test-dataset" title="Permalink to this heading">#</a></h3>
 <p>In the first instance we will take one week of data that is complete i.e. a record exists for every 15 minute interval during that week.</p>
@@ -703,7 +704,7 @@ We will first need to rescale our dataset to improve model convergence. For this
 </div>
 </div>
 </div>
-<p>Now we can cluster the data using the K-Means algorithm. This produces labels and centroids for the clusters. In the plot below we can see that clustering based on hourly points does not really produce anything useful. This is probably because we didnt see any signal at the hourly period during the frequency analysis. Moving forward it might make sense to look at some of the periods that experienced more powerful signals i.e. 12-hour, 24-hour, quarterly and annual.</p>
+<p>Now we can cluster the data using the K-Means algorithm. This produces labels and centroids for the clusters.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -760,6 +761,7 @@ We will first need to rescale our dataset to improve model convergence. For this
 <img alt="_images/5d728bf9c1a708bd42606860bc66cbd5e28903324e882b842d84e21cb9a37164.png" src="_images/5d728bf9c1a708bd42606860bc66cbd5e28903324e882b842d84e21cb9a37164.png" />
 </div>
 </div>
+<p>In the plot above we can see that clustering based on hourly points does not really produce anything useful. This is probably because we didnt see any signal at the hourly period during the frequency analysis. Moving forward it might make sense to look at some of the periods that experienced more powerful signals i.e. 12-hour, 24-hour, quarterly and annual.</p>
 </section>
 <section id="evaluating-the-hourly-clustered-data">
 <h3>4.2.4 Evaluating the hourly clustered data<a class="headerlink" href="#evaluating-the-hourly-clustered-data" title="Permalink to this heading">#</a></h3>
@@ -897,15 +899,15 @@ We will first need to rescale our dataset to improve model convergence. For this
 </div>
 </section>
 </section>
-<section id="test-design-iteration-2">
-<h2>4.3 Test Design: Iteration 2<a class="headerlink" href="#test-design-iteration-2" title="Permalink to this heading">#</a></h2>
+<section id="test-design-iteration-2-24-hour-time-period">
+<h2>4.3 Test Design: Iteration 2 (24-Hour Time Period)<a class="headerlink" href="#test-design-iteration-2-24-hour-time-period" title="Permalink to this heading">#</a></h2>
 <section id="read-in-the-complete-days-dataset">
 <h3>4.3.1 Read in the complete days dataset<a class="headerlink" href="#read-in-the-complete-days-dataset" title="Permalink to this heading">#</a></h3>
 <p>For this we will use a helper function created for this purpose. This function <code class="docutils literal notranslate"><span class="pre">aggregate_and_preprocess_daily_data</span></code> will again group on datetime and aggregate on sum to remove the trajectories information. It will then resample the data on day, and scale the data using the <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code>.</p>
 </section>
 <section id="clustering-the-data-at-daily-aggregations">
 <h3>4.3.2 Clustering the data at daily aggregations<a class="headerlink" href="#clustering-the-data-at-daily-aggregations" title="Permalink to this heading">#</a></h3>
-<p>As we are missing some of the data, aggregations at the daily level will use the mean count rather than the sum count as we have used previously. Additionally, only days where there is greater than 95% data completeness will be used.</p>
+<p>As some of the data are missing, aggregations at the daily level will use the mean count rather than the sum count as we have used previously. Additionally, only days where there is greater than 95% data completeness will be used.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -1293,14 +1295,14 @@ We will first need to rescale our dataset to improve model convergence. For this
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-modelling-technique">4.1 Select Modelling Technique</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-initial-test-design">4.2 Generate Initial Test Design</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-initial-test-design-hourly-time-period">4.2 Generate Initial Test Design (Hourly Time Period)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-an-limited-test-dataset">4.2.1 Creating an limited test dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-the-data">4.2.2 Clustering the data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualising-the-results">4.2.3 Visualising the results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-the-hourly-clustered-data">4.2.4 Evaluating the hourly clustered data</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-design-iteration-2">4.3 Test Design: Iteration 2</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-design-iteration-2-24-hour-time-period">4.3 Test Design: Iteration 2 (24-Hour Time Period)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#read-in-the-complete-days-dataset">4.3.1 Read in the complete days dataset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#clustering-the-data-at-daily-aggregations">4.3.2 Clustering the data at daily aggregations</a></li>
 </ul>

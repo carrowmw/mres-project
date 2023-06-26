@@ -1,7 +1,9 @@
 from typing import Tuple
 import seaborn as sns
 import pandas as pd
+import torch
 import numpy as np
+import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from sklearn.preprocessing import StandardScaler
 
@@ -93,3 +95,74 @@ def aggregate_and_preprocess_daily_data(
         print(f"Final length: {len(scaled_data)}")
 
     return scaled_data, removed_df.index, removed_df.columns
+
+
+def sliding_windows_array(data, window_size, horizon=1, stride=1):
+    inputs = []
+    targets = []
+    for i in range(0, len(data) - window_size - horizon + 1, stride):
+        input_data = data[i : i + window_size]
+        target_data = data[i + window_size : i + window_size + horizon]
+        if i == 0:
+            print(
+                f"Input shape: {input_data.shape} | Target shape: {target_data.shape}"
+            )
+        inputs.append(input_data)
+        targets.append(target_data)
+    return np.array(inputs), np.array(targets).reshape(-1, horizon)
+
+
+def sliding_windows_tensor(data, window_size, horizon=1, stride=1):
+    inputs = []
+    targets = []
+    for i in range(0, len(data) - window_size - horizon + 1, stride):
+        input_data = data[i : i + window_size]
+        target_data = data[i + window_size : i + window_size + horizon]
+        if i == 0:
+            print(
+                f"Input shape: {input_data.shape} | Target shape: {target_data.shape}"
+            )
+        inputs.append(input_data)
+        targets.append(target_data)
+    return torch.tensor(inputs), torch.tensor(targets)
+
+
+def plot_windows(inputs, predictions, targets, num_plots=5, step=1):
+    custom_palette = get_custom_palette()
+    num_plots = min(num_plots, len(inputs))
+    start_idx = np.random.choice(len(inputs) - num_plots)
+
+    fig, axs = plt.subplots(num_plots, 1, figsize=(6, 2 * num_plots))
+
+    max_y = inputs.min()
+
+    for i in range(num_plots):
+        idx = start_idx + step * i
+        axs[i].plot(
+            range(len(inputs[idx])),
+            inputs[idx],
+            label="Inputs",
+            color=custom_palette[0],
+        )
+        axs[i].scatter(
+            range(len(inputs[idx]), len(inputs[idx]) + len(predictions[idx])),
+            predictions[idx],
+            label="Predictions",
+            color=custom_palette[1],
+            marker="x",
+            s=60,
+        )
+        axs[i].scatter(
+            range(len(inputs[idx]), len(inputs[idx]) + len(targets[idx])),
+            targets[idx],
+            label="Targets",
+            color=custom_palette[0],
+        )
+        # Update max_y if the max of the current input or prediction is greater
+        max_y = max(max_y, inputs[idx].max(), targets[idx].max())
+        axs[i].set_ylim(0, max_y)
+        if i == 0:
+            axs[i].legend()
+
+    plt.tight_layout()
+    plt.show()
