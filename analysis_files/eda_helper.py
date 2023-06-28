@@ -97,28 +97,26 @@ def aggregate_and_preprocess_daily_data(
     return scaled_data, removed_df.index, removed_df.columns
 
 
-def sliding_windows_array(data, window_size, horizon=1, stride=1):
+def sliding_windows(data, window_size, horizon=1, stride=1, shapes=False):
+    """
+    Generate sliding windows from the given data for sequence learning.
+
+    Parameters:
+    data (array-like): The time-series data to generate windows from.
+    window_size (int): The size of the sliding window to use.
+    horizon (int, optional): The prediction horizon. Defaults to 1.
+    stride (int, optional): The stride to take between windows. Defaults to 1.
+
+    Returns:
+    tuple: A tuple containing the inputs and targets as torch tensors.
+
+    """
     inputs = []
     targets = []
     for i in range(0, len(data) - window_size - horizon + 1, stride):
         input_data = data[i : i + window_size]
         target_data = data[i + window_size : i + window_size + horizon]
-        if i == 0:
-            print(
-                f"Input shape: {input_data.shape} | Target shape: {target_data.shape}"
-            )
-        inputs.append(input_data)
-        targets.append(target_data)
-    return np.array(inputs), np.array(targets).reshape(-1, horizon)
-
-
-def sliding_windows_tensor(data, window_size, horizon=1, stride=1):
-    inputs = []
-    targets = []
-    for i in range(0, len(data) - window_size - horizon + 1, stride):
-        input_data = data[i : i + window_size]
-        target_data = data[i + window_size : i + window_size + horizon]
-        if i == 0:
+        if i == 0 & shapes == True:
             print(
                 f"Input shape: {input_data.shape} | Target shape: {target_data.shape}"
             )
@@ -128,6 +126,19 @@ def sliding_windows_tensor(data, window_size, horizon=1, stride=1):
 
 
 def plot_windows(inputs, predictions, targets, num_plots=5, step=1):
+    """
+    Plot a random selection of the given inputs, predictions, and targets.
+
+    Parameters:
+    inputs (array-like): The input data.
+    predictions (array-like): The predicted values.
+    targets (array-like): The actual target values.
+    num_plots (int, optional): The number of plots to make. Defaults to 5.
+    step (int, optional): The step to take between plots. Defaults to 1.
+
+    Returns:
+    None
+    """
     custom_palette = get_custom_palette()
     num_plots = min(num_plots, len(inputs))
     start_idx = np.random.choice(len(inputs) - num_plots)
