@@ -171,6 +171,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">2.4 Data Quality Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_Data_Preparation.html">3 Data Preparation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_Modelling.html">4 Modelling Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Modelling_2.html">4 Modelling</a></li>
 </ul>
 
     </div>
@@ -392,7 +393,7 @@ document.write(`
 <li><p>Other potential problems: This could include things like erroneous values, mislabeled classes, irrelevant features, etc.</p></li>
 </ul>
 <section id="file-access-and-save-paths">
-<h2>2.4.1 File access and save paths<a class="headerlink" href="#file-access-and-save-paths" title="Permalink to this heading">#</a></h2>
+<span id="id2"></span><h2>2.4.1 File access and save paths<a class="headerlink" href="#file-access-and-save-paths" title="Permalink to this heading">#</a></h2>
 <p>Here we will import the helper functions and setup up the save paths for the data and figures that are generated</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -443,7 +444,7 @@ document.write(`
 </div>
 </section>
 <section id="missing-values">
-<h2>2.4.2 Missing values<a class="headerlink" href="#missing-values" title="Permalink to this heading">#</a></h2>
+<span id="id3"></span><h2>2.4.2 Missing values<a class="headerlink" href="#missing-values" title="Permalink to this heading">#</a></h2>
 <p>This section gives an overview of the total number of records available per day over the study period.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -560,7 +561,12 @@ document.write(`
 <section id="remove-missing-values">
 <h2>Remove missing values<a class="headerlink" href="#remove-missing-values" title="Permalink to this heading">#</a></h2>
 <p>For the purpose of modelling, we should remove some of the days where there is very little data. First lets have a look at how the selection level for data removal affects the amount of data removed. We can see that at a selection level of 100% around 60% of the total entries are removed whereas at a 95% selection level only around 20% of the data is removed. We will <code class="docutils literal notranslate"><span class="pre">pickle</span></code> both these selections for use in later notebooks.</p>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># group by date and count number of entries for each date</span>
 <span class="n">east_date_counts</span> <span class="o">=</span> <span class="n">east_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
@@ -593,6 +599,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x16758749ff0&gt;
 </pre></div>
@@ -600,7 +607,12 @@ document.write(`
 <img alt="_images/94923f269b6cfe12fba53623da13fbd90b85bfe209b1b6f166fca8c9bb2c528a.png" src="_images/94923f269b6cfe12fba53623da13fbd90b85bfe209b1b6f166fca8c9bb2c528a.png" />
 </div>
 </div>
-<div class="cell docutils container">
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate threshold for 100% completeness</span>
 <span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.95</span> <span class="o">*</span> <span class="mi">192</span>  <span class="c1"># 192 = 24 * 4 * 2</span>
@@ -626,6 +638,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>East | Length of complete days: 62507
 West | Length of complete days: 62541
@@ -725,7 +738,7 @@ West | Proportion of data removed: 59.57%
 </div>
 </section>
 <section id="consistency-of-the-data">
-<h2>2.4.3 Consistency of the data<a class="headerlink" href="#consistency-of-the-data" title="Permalink to this heading">#</a></h2>
+<span id="id4"></span><h2>2.4.3 Consistency of the data<a class="headerlink" href="#consistency-of-the-data" title="Permalink to this heading">#</a></h2>
 <p>Here we can see an overview of each data point per day over the study period to further investigate any patterns in the lack of consistency.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -835,7 +848,7 @@ West | Proportion of data removed: 59.57%
 </div>
 </section>
 <section id="outliers">
-<h2>2.4.4 Outliers<a class="headerlink" href="#outliers" title="Permalink to this heading">#</a></h2>
+<span id="id5"></span><h2>2.4.4 Outliers<a class="headerlink" href="#outliers" title="Permalink to this heading">#</a></h2>
 <p>Our data follows some kind of exponential decay function. The simplest way to look for outliers is to classify value above a certain percentile as outliers. We can see that the east facing sensor is more heavily skewed towards 0 than the west facing sensor.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -899,7 +912,7 @@ West | Percentile | 95th: 391 | 99th: 568 | 99.9th: 810
 </div>
 </section>
 <section id="duplicates">
-<h2>2.4.5 Duplicates<a class="headerlink" href="#duplicates" title="Permalink to this heading">#</a></h2>
+<span id="id6"></span><h2>2.4.5 Duplicates<a class="headerlink" href="#duplicates" title="Permalink to this heading">#</a></h2>
 <p>There are no duplicates in the dataset.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">

@@ -173,6 +173,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="2.4_Data_Quality_Report.html">2.4 Data Quality Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_Data_Preparation.html">3 Data Preparation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_Modelling.html">4 Modelling Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Modelling_2.html">4 Modelling</a></li>
 </ul>
 
     </div>
@@ -384,7 +385,7 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="data-description-report">
-<h1>2.2 Data Description Report<a class="headerlink" href="#data-description-report" title="Permalink to this heading">#</a></h1>
+<span id="id1"></span><h1>2.2 Data Description Report<a class="headerlink" href="#data-description-report" title="Permalink to this heading">#</a></h1>
 <p>Here, we’ll provide a detailed description of the collected data:</p>
 <ul class="simple">
 <li><p>A detailed description of each dataset.</p></li>
@@ -440,7 +441,7 @@ document.write(`
 </details>
 </div>
 <section id="overview-of-the-raw-data">
-<h3>2.2.1.1 Overview of the raw data<a class="headerlink" href="#overview-of-the-raw-data" title="Permalink to this heading">#</a></h3>
+<span id="id3"></span><h3>2.2.1.1 Overview of the raw data<a class="headerlink" href="#overview-of-the-raw-data" title="Permalink to this heading">#</a></h3>
 <p>The raw csv contains extra locations that are not of interest so these will need to be filtered out. The raw data tells us we are dealing with pedestrian flow in the form <span class="math notranslate nohighlight">\(n/15m\)</span> where <span class="math notranslate nohighlight">\(n\)</span> is the number of pedestrians and <span class="math notranslate nohighlight">\(m\)</span> is minutes. We can also see that each row specifies a directional vector. We can also see that the value for <code class="docutils literal notranslate"><span class="pre">dir</span></code> is not consistent between sensors - <code class="docutils literal notranslate"><span class="pre">NclQueenVictoriaRdPercyBuilding</span></code> for example, prefixes <code class="docutils literal notranslate"><span class="pre">from_</span></code> to each instance.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -630,7 +631,7 @@ document.write(`
 </div>
 </section>
 <section id="attribute-creation-and-filtering-for-eda">
-<h3>2.2.1.2 Attribute creation and filtering for EDA<a class="headerlink" href="#attribute-creation-and-filtering-for-eda" title="Permalink to this heading">#</a></h3>
+<span id="id4"></span><h3>2.2.1.2 Attribute creation and filtering for EDA<a class="headerlink" href="#attribute-creation-and-filtering-for-eda" title="Permalink to this heading">#</a></h3>
 <p>We will create a few new columns that are string formatted derivatives of the datetime column that will help with visualising the data. We will also create some integer columns for day in week, month, quarter, and hours and minutes since midnight. This is to assist in any later analysis.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -821,7 +822,7 @@ document.write(`
 </div>
 </section>
 <section id="instances-and-target-features">
-<span id="id1"></span><h3>2.2.1.3 Instances and target features<a class="headerlink" href="#instances-and-target-features" title="Permalink to this heading">#</a></h3>
+<span id="id6"></span><h3>2.2.1.3 Instances and target features<a class="headerlink" href="#instances-and-target-features" title="Permalink to this heading">#</a></h3>
 <p>Now lets have a look at some of the attributes and features that are of interest. We can see that the data has significant gaps - around 15% of the data over this period is missing if we calculate the number of 15 minute periods that exist between the start and end dates. We can also see that each sensor direction contains two directional vectors. These describe whether a persons direction of travel is left or right across the CCTV footage.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
