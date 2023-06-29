@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = '4_Modelling';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4 Modelling" href="4_Modelling_2.html" />
     <link rel="prev" title="3 Data Preparation" href="3_Data_Preparation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -170,6 +171,7 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="2.4_Data_Quality_Report.html">2.4 Data Quality Report</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_Data_Preparation.html">3 Data Preparation</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">4 Modelling Report</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_Modelling_2.html">4 Modelling</a></li>
 </ul>
 
     </div>
@@ -390,15 +392,15 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="modelling-report">
-<h1>4 Modelling Report<a class="headerlink" href="#modelling-report" title="Permalink to this heading">#</a></h1>
+<span id="id3"></span><h1>4 Modelling Report<a class="headerlink" href="#modelling-report" title="Permalink to this heading">#</a></h1>
 <section id="select-modelling-technique">
-<h2>4.1 Select Modelling Technique<a class="headerlink" href="#select-modelling-technique" title="Permalink to this heading">#</a></h2>
+<span id="id4"></span><h2>4.1 Select Modelling Technique<a class="headerlink" href="#select-modelling-technique" title="Permalink to this heading">#</a></h2>
 <p>In this section we will select the data mining techniques that will be applied to this problem. As we want to investigate the structure of this data we will use unsupervised learning techniques. Specifically clustering techniques like k-means, x-means and DBScan. These methods will hopefully reveal some underlying patterns in the data to help us achieve the objectives we set out in section 1.</p>
 </section>
 <section id="generate-initial-test-design-hourly-time-period">
-<h2>4.2 Generate Initial Test Design (Hourly Time Period)<a class="headerlink" href="#generate-initial-test-design-hourly-time-period" title="Permalink to this heading">#</a></h2>
+<span id="id5"></span><h2>4.2 Generate Initial Test Design (Hourly Time Period)<a class="headerlink" href="#generate-initial-test-design-hourly-time-period" title="Permalink to this heading">#</a></h2>
 <section id="creating-an-limited-test-dataset">
-<h3>4.2.1 Creating an limited test dataset<a class="headerlink" href="#creating-an-limited-test-dataset" title="Permalink to this heading">#</a></h3>
+<span id="id6"></span><h3>4.2.1 Creating an limited test dataset<a class="headerlink" href="#creating-an-limited-test-dataset" title="Permalink to this heading">#</a></h3>
 <p>In the first instance we will take one week of data that is complete i.e. a record exists for every 15 minute interval during that week.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -654,7 +656,7 @@ Length of data resampled hourly: 168
 </div>
 </section>
 <section id="clustering-the-data">
-<h3>4.2.2 Clustering the data<a class="headerlink" href="#clustering-the-data" title="Permalink to this heading">#</a></h3>
+<span id="id7"></span><h3>4.2.2 Clustering the data<a class="headerlink" href="#clustering-the-data" title="Permalink to this heading">#</a></h3>
 <p>For our first clustering model we will use <code class="docutils literal notranslate"><span class="pre">sklearn.cluster.KMeans</span></code>. The steps for creating this model are:</p>
 <ol class="arabic simple">
 <li><p>Prepare the data.</p>
@@ -734,7 +736,7 @@ We will first need to rescale our dataset to improve model convergence. For this
 </div>
 </section>
 <section id="visualising-the-results">
-<h3>4.2.3 Visualising the results<a class="headerlink" href="#visualising-the-results" title="Permalink to this heading">#</a></h3>
+<span id="id8"></span><h3>4.2.3 Visualising the results<a class="headerlink" href="#visualising-the-results" title="Permalink to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -764,7 +766,7 @@ We will first need to rescale our dataset to improve model convergence. For this
 <p>In the plot above we can see that clustering based on hourly points does not really produce anything useful. This is probably because we didnt see any signal at the hourly period during the frequency analysis. Moving forward it might make sense to look at some of the periods that experienced more powerful signals i.e. 12-hour, 24-hour, quarterly and annual.</p>
 </section>
 <section id="evaluating-the-hourly-clustered-data">
-<h3>4.2.4 Evaluating the hourly clustered data<a class="headerlink" href="#evaluating-the-hourly-clustered-data" title="Permalink to this heading">#</a></h3>
+<span id="id9"></span><h3>4.2.4 Evaluating the hourly clustered data<a class="headerlink" href="#evaluating-the-hourly-clustered-data" title="Permalink to this heading">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -900,13 +902,13 @@ We will first need to rescale our dataset to improve model convergence. For this
 </section>
 </section>
 <section id="test-design-iteration-2-24-hour-time-period">
-<h2>4.3 Test Design: Iteration 2 (24-Hour Time Period)<a class="headerlink" href="#test-design-iteration-2-24-hour-time-period" title="Permalink to this heading">#</a></h2>
+<span id="id10"></span><h2>4.3 Test Design: Iteration 2 (24-Hour Time Period)<a class="headerlink" href="#test-design-iteration-2-24-hour-time-period" title="Permalink to this heading">#</a></h2>
 <section id="read-in-the-complete-days-dataset">
-<h3>4.3.1 Read in the complete days dataset<a class="headerlink" href="#read-in-the-complete-days-dataset" title="Permalink to this heading">#</a></h3>
+<span id="id11"></span><h3>4.3.1 Read in the complete days dataset<a class="headerlink" href="#read-in-the-complete-days-dataset" title="Permalink to this heading">#</a></h3>
 <p>For this we will use a helper function created for this purpose. This function <code class="docutils literal notranslate"><span class="pre">aggregate_and_preprocess_daily_data</span></code> will again group on datetime and aggregate on sum to remove the trajectories information. It will then resample the data on day, and scale the data using the <code class="docutils literal notranslate"><span class="pre">sklearn.preprocessing.StandardScaler</span></code>.</p>
 </section>
 <section id="clustering-the-data-at-daily-aggregations">
-<h3>4.3.2 Clustering the data at daily aggregations<a class="headerlink" href="#clustering-the-data-at-daily-aggregations" title="Permalink to this heading">#</a></h3>
+<span id="id12"></span><h3>4.3.2 Clustering the data at daily aggregations<a class="headerlink" href="#clustering-the-data-at-daily-aggregations" title="Permalink to this heading">#</a></h3>
 <p>As some of the data are missing, aggregations at the daily level will use the mean count rather than the sum count as we have used previously. Additionally, only days where there is greater than 95% data completeness will be used.</p>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
@@ -1229,10 +1231,10 @@ We will first need to rescale our dataset to improve model convergence. For this
 </section>
 </section>
 <section id="build-model">
-<h2>4.3 Build Model<a class="headerlink" href="#build-model" title="Permalink to this heading">#</a></h2>
+<span id="id13"></span><h2>4.3 Build Model<a class="headerlink" href="#build-model" title="Permalink to this heading">#</a></h2>
 </section>
 <section id="assess-model">
-<h2>4.4 Assess Model<a class="headerlink" href="#assess-model" title="Permalink to this heading">#</a></h2>
+<span id="id14"></span><h2>4.4 Assess Model<a class="headerlink" href="#assess-model" title="Permalink to this heading">#</a></h2>
 </section>
 </section>
 
@@ -1275,6 +1277,15 @@ We will first need to rescale our dataset to improve model convergence. For this
         <p class="prev-next-subtitle">previous</p>
         <p class="prev-next-title">3 Data Preparation</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="4_Modelling_2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4 Modelling</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div></div>
   
