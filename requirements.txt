@@ -16,10 +16,14 @@ cycler==0.11.0
 debugpy==1.6.7
 decorator==5.1.1
 defusedxml==0.7.1
-docutils==0.18.1
+docutils==0.17.1
 executing==1.2.0
 fastjsonschema==2.17.1
+ffmpeg-python==0.2.0
+filelock==3.9.0
 fonttools==4.39.4
+future==0.18.3
+ghp-import==2.1.0
 greenlet==2.0.2
 idna==3.4
 imagesize==1.4.1
@@ -45,6 +49,7 @@ matplotlib-inline==0.1.6
 mdit-py-plugins==0.3.5
 mdurl==0.1.2
 mistune==2.0.5
+mpmath==1.2.1
 mres-project @ file:///C:/%23code/%23python/%23current/mres-project
 myst-nb==0.17.2
 myst-parser==0.18.1
@@ -52,6 +57,7 @@ nbclient==0.7.4
 nbconvert==7.4.0
 nbformat==5.9.0
 nest-asyncio==1.5.6
+networkx==3.0
 numpy==1.24.3
 packaging==23.1
 pandas==2.0.2
@@ -100,9 +106,13 @@ sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
 SQLAlchemy==2.0.16
 stack-data==0.6.2
+sympy==1.11.1
 tabulate==0.9.0
 threadpoolctl==3.1.0
 tinycss2==1.2.1
+torch==2.0.1+cu117
+torchaudio==2.0.2+cu117
+torchvision==0.15.2+cu117
 tornado==6.3.2
 traitlets==5.9.0
 typing_extensions==4.6.3
@@ -111,4 +121,5 @@ uc-micro-py==1.0.2
 urllib3==2.0.3
 wcwidth==0.2.6
 webencodings==0.5.1
+xkcd==2.4.2
 zipp==3.15.0
