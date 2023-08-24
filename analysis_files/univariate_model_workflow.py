@@ -25,7 +25,7 @@ TARGET_INDEX = 0
 BATCH_SIZE = 8
 EPOCHS = 5
 ERROR_STD = 4
-DATA_PATH = "../data/saville_row_east_west/"
+DATA_PATH = "C:\#code\#python\#current\mres-project\data\saville_row_east_west"
 OUTPUT_TABLES_PATH = "../output/tables/4/"
 OUTPUT_FIGURES_PATH = "../output/figures/4/"
 
@@ -83,8 +83,8 @@ def compute_performance_metrics(predictions, targets):
         The function assumes the predictions and targets are torch tensors.
         They are then flattened and detached before computation.
     """
-    predictions_flat_np = predictions.flatten().detach().numpy()
-    targets_flat_np = targets.flatten().detach().numpy()
+    predictions_flat_np = predictions.view(-1).detach().cpu().numpy()
+    targets_flat_np = targets.view(-1).detach().cpu().numpy()
 
     return {
         "MAE": mean_absolute_error(targets_flat_np, predictions_flat_np),
@@ -117,19 +117,19 @@ class BaselineModel(nn.Module):
 
 class LSTMModel(nn.Module):
     """
-    LSTM-based model for time series prediction.
+    LSTM-based model for time series prediction. Suitable for both univariate and multivariate time series.
 
     Args:
-        input_size (int, optional): The number of expected features in the input `x`. Default: 1.
+        feature_dim (int): The number of expected features in the input `x`.
         hidden_size (int, optional): The number of features in the hidden state. Default: 50.
-        output_size (int, optional): Number of features in the output. Default: 1.
+        output_dim (int, optional): Number of features in the output. Default: 1.
         num_layers (int, optional): Number of recurrent layers. Default: 1.
     """
 
-    def __init__(self, input_size=1, hidden_size=50, output_size=1, num_layers=1):
+    def __init__(self, feature_dim, hidden_size=50, output_dim=1, num_layers=1):
         super().__init__()
-        self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
-        self.linear = nn.Linear(hidden_size, output_size)
+        self.lstm = nn.LSTM(feature_dim, hidden_size, num_layers, batch_first=True)
+        self.linear = nn.Linear(hidden_size, output_dim)
 
     def forward(self, x):
         """
@@ -141,7 +141,7 @@ class LSTMModel(nn.Module):
 
         Returns:
             torch.Tensor: Predictions tensor, taking the last output from the LSTM sequence.
-                          Shape: [batch_size, feature_dim].
+                          Shape: [batch_size, output_dim].
         """
         x, _ = self.lstm(x)
         x = self.linear(x)
@@ -187,17 +187,19 @@ class TimeSeriesDataset(Dataset):
         return self.sequences[index], self.targets[index]
 
 
-def train_lstm_model(model, train_dataloader, test_dataloader):
+def train_lstm_model(lstm_model, train_dataloader, test_dataloader, epochs=50, lr=0.01):
     # Define loss function and optimizer
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters())
+    optimizer = optim.Adam(lstm_model.parameters(), lr=lr)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.9)
+
     train_metrics = []
     test_metrics = []
 
     # Training loop
     for epoch in range(EPOCHS):
         train_MSE, train_RMSE = 0, 0
-        model.train()
+        lstm_model.train()
 
         # Training phase
         for X, y in train_dataloader:
@@ -206,7 +208,7 @@ def train_lstm_model(model, train_dataloader, test_dataloader):
             y = y.unsqueeze(-1).unsqueeze(-1).float().to(device)
 
             # Model prediction and loss calculation
-            train_preds = model(X)
+            train_preds = train_MSE(X)
             loss_MSE = criterion(train_preds.unsqueeze(dim=-1), y)
 
             # Backpropagation and optimization
@@ -224,7 +226,7 @@ def train_lstm_model(model, train_dataloader, test_dataloader):
         train_metrics.append([epoch, train_MSE, train_RMSE])
 
         test_MSE, test_RMSE = 0, 0
-        model.eval()
+        train_MSE.eval()
 
         # Evaluation phase
         with torch.no_grad():
@@ -234,7 +236,7 @@ def train_lstm_model(model, train_dataloader, test_dataloader):
                 y = y.unsqueeze(-1).unsqueeze(-1).float().to(device)
 
                 # Model prediction and loss calculation
-                test_preds = model(X)
+                test_preds = train_MSE(X)
                 loss_MSE = criterion(test_preds.unsqueeze(dim=-1), y)
 
                 # Accumulate loss for metrics
@@ -251,6 +253,9 @@ def train_lstm_model(model, train_dataloader, test_dataloader):
             print(
                 f"Epoch: {epoch+1} | Train MSE: {train_MSE:.5f} | Train RMSE: {train_RMSE:.5f} | Test MSE: {test_MSE:.5f} | Test RMSE: {test_RMSE:.5f}"
             )
+
+        # Adjust learning rate
+        scheduler.step()
 
     return train_metrics, test_metrics
 
@@ -301,8 +306,8 @@ def main():
         predictions = model(inputs.to(device).unsqueeze(dim=-1).float())
     errors = (predictions.squeeze(dim=-1) - targets.squeeze(dim=-1)).abs().numpy()
 
-    LSTM_predictions = model(inputs.to(device).unsqueeze(dim=-1).float())
-    metrics = compute_performance_metrics(LSTM_predictions, targets)
+    lstm_predictions = model(inputs.to(device).unsqueeze(dim=-1).float())
+    metrics = compute_performance_metrics(lstm_predictions, targets)
     metrics["Model"] = "LSTM"
     metrics_df = pd.DataFrame([metrics])  # Convert metrics to a DataFrame
     performance_df = pd.concat([performance_df, metrics_df], ignore_index=True)

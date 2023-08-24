@@ -1,4 +1,4 @@
-from typing import Tuple
+import re
 import seaborn as sns
 import pandas as pd
 import torch
@@ -462,29 +462,30 @@ def preprocess_data(
 
 
 def sliding_windows(
-    data,
-    window_size,
-    input_feature_indices,
-    target_feature_index,
-    horizon=1,
+    data: np.ndarray,
+    window_size: int,
+    input_feature_indices: list,
+    target_feature_index: int,
+    horizon: int,
     stride=1,
     shapes=False,
 ):
     """
-    Generate sliding windows from the given data for sequence learning.
+    Generate sliding windows from the provided time-series data for sequence learning.
 
     Parameters:
-    data (array-like): The time-series data to generate windows from.
-    window_size (int): The size of the sliding window to use.
-    input_feature_indices (list of ints): Indices of the features to be used as input.
-    target_feature_index (int): Index of the feature to be predicted.
-    horizon (int, optional): The prediction horizon. Defaults to 1.
-    stride (int, optional): The stride to take between windows. Defaults to 1.
+    - data (np.ndarray): The time-series data from which windows will be generated.
+    - window_size (int): Specifies the size of each sliding window.
+    - input_feature_indices (list of ints): The indices of features to be considered as input.
+    - target_feature_index (int): Index of the feature that needs to be predicted.
+    - horizon (int): How many steps ahead the prediction should be.
+    - stride (int, optional): Steps between the start of each window. Defaults to 1.
+    - shapes (bool, optional): If set to True, it prints shapes of input and target for the first window. Defaults to False.
 
     Returns:
-    tuple: A tuple containing the inputs and targets as torch tensors.
-
+    - tuple: Contains inputs and targets as torch tensors.
     """
+
     inputs = []
     targets = []
     for i in range(0, len(data) - window_size - horizon + 1, stride):
@@ -570,3 +571,135 @@ def plot_windows(inputs, predictions, targets, horizon, num_plots=5, step=1, tit
         axs[i].grid(True, which="both", linestyle="--", linewidth=0.5)
 
     fig.suptitle(title, fontsize=10, y=0.93)
+
+
+def plot_mv_windows(
+    inputs,
+    predictions,
+    targets,
+    horizon,
+    num_plots=5,
+    step=1,
+    title="",
+    input_feature_names=None,
+):
+    """
+    Plot a random selection of the given inputs, predictions, and targets.
+
+    Parameters:
+    inputs (array-like): The input data.
+    predictions (array-like): The predicted values.
+    targets (array-like): The actual target values.
+    horizon (int): The prediction horizon.
+    num_plots (int, optional): The number of plots to make. Defaults to 5.
+    step (int, optional): The step to take between plots. Defaults to 1.
+
+    Returns:
+    None
+    """
+    print(inputs.shape, predictions.shape, targets.shape)
+
+    custom_palette = get_custom_palette()
+    num_plots = min(num_plots, len(inputs))
+
+    if len(inputs) <= num_plots:
+        start_idx = 0
+    else:
+        start_idx = np.random.choice(len(inputs) - num_plots)
+
+    # Get the global minimum and maximum y-values for the entire inputs dataset
+    min_y = -1.5
+    max_y = 3.5
+
+    # Check if multivariate
+    is_multivariate = len(inputs.shape) > 1 and inputs.shape[1] > 1
+
+    fig, axs = plt.subplots(
+        num_plots, 1, figsize=(10, 4 * num_plots)
+    )  # Adjusted from 6 to 8
+
+    for i in range(num_plots):
+        idx = start_idx + step * i
+
+        current_input = inputs[idx]
+
+        if is_multivariate and len(current_input.shape) > 1:
+            for j in range(current_input.shape[1]):
+                axs[i].plot(
+                    range(len(current_input)),
+                    current_input[:, j],
+                    label=input_feature_names[j],
+                    color=custom_palette[j % len(custom_palette)],
+                )
+        else:
+            axs[i].plot(
+                range(len(current_input)),
+                current_input,
+                label="Inputs",
+                color=custom_palette[0],
+            )
+
+        # Handle predictions and targets as scalar values
+        prediction_value = predictions[i]  # Assuming predictions are 1D
+        target_value = targets[i]  # Assuming targets are 1D
+
+        axs[i].scatter(
+            len(inputs[idx]) + horizon,
+            prediction_value,
+            label="Predictions",
+            color=custom_palette[-1],
+            marker="x",
+            s=60,
+        )
+        axs[i].scatter(
+            len(inputs[idx]) + horizon,
+            target_value,
+            label="Targets",
+            color=custom_palette[0],
+        )
+
+        axs[i].set_ylim(min_y, max_y)
+        if i == 0:
+            axs[i].legend(loc="upper left")
+            axs[i].set_xlabel("Timetep (15 minutes)")
+            axs[i].set_ylabel("Scaled value")
+
+        # Add grid to the plots
+        # axs[i].grid(True, which="both", linestyle="--", linewidth=0.5)
+
+    fig.suptitle(title, y=0.90)
+
+
+def extract_values_from_filename(filename):
+    """
+    Extracts the Completeness, Sequence Length, Horizon, and Window Size values
+    from the given filename using regular expressions.
+
+    Args:
+    - filename (str): The filename to extract the values from.
+
+    Returns:
+    - dict: A dictionary containing the extracted values. Returns None for values not found.
+    """
+    # Regular expressions for each value
+    regex_patterns = {
+        "Completeness": r"Completeness([\d.]+)",
+        "SequenceLength": r"SequenceLength(\d+)",
+        "Horizon": r"Horizon(\d+)",
+        "WindowSize": r"WindowSize(\d+)",
+        "TestNumber": r"TestNumber(\d+)",
+    }
+
+    extracted_values = {}
+    for key, pattern in regex_patterns.items():
+        match = re.search(pattern, filename)
+        if match:
+            # Convert to float if it has a decimal point, else convert to int
+            value = (
+                float(match.group(1)) if "." in match.group(1) else int(match.group(1))
+            )
+            extracted_values[key] = value
+        else:
+            extracted_values[key] = None
+
+    return extracted_values

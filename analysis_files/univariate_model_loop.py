@@ -28,7 +28,7 @@ TARGET_INDEX = 0
 BATCH_SIZE = 8
 EPOCHS = 20
 ERROR_STD = 4
-DATA_PATH = "../data/saville_row_east_west/"
+DATA_PATH = "C:\#code\#python\#current\mres-project\data\saville_row_east_west"
 OUTPUT_TABLES_PATH = "../output/tables/4/"
 OUTPUT_FIGURES_PATH = "../output/figures/4/"
 
@@ -412,7 +412,7 @@ def main():
                 )
                 runtime_df.to_csv(
                     "runtime_um.csv",
-                    mode="a",
+                    mode="w",
                     index=False,
                     header=not os.path.exists("runtime_um.csv"),
                 )
