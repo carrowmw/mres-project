@@ -10,7 +10,7 @@ from modelling_functions import (
 )
 
 # Define constants
-COMPLETENESS_THRESHOLDS = [1, 0.95, 0.90, 0.80]
+COMPLETENESS_THRESHOLDS = [1, 0.98, 0.96, 0.94]
 # COMPLETENESS_THRESHOLDS = [1]
 WINDOW_SIZES = [3, 6, 12, 24, 48, 96]
 # WINDOW_SIZES = [3]
